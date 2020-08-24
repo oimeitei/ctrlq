@@ -27,12 +27,16 @@ if (MKL)
   message(STATUS "Linking to MKL BLAS libraries")
 
   find_package(BLAS)
+  find_package(LAPACK)
+
   message(STATUS "BLAS found: ${BLAS_LIBRARIES}")
-  message("CHECK for the correct MKL BLAS libraries")
+  message(STATUS "LAPACK found: ${LAPACK_LIBRARIES}")
+  message("CHECK for the correct MKL libraries")
   message("if other PATH/BLAS/LIBRARIES missing: append to cmake")
   message("cmake -DMKL_LIBS=/paths")
 
   link_libraries(${BLAS_LIBRARIES})
+  link_libraries(${LAPACK_LIBRARIES})
 
   set(BLA_VENDOR Intel10_64lp_seq)
 
