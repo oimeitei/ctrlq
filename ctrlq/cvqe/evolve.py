@@ -13,13 +13,13 @@
 #   limitations under the License.
 
 import numpy, scipy
-from ctrlq.lib.solve import solve_func
-from ctrlq.lib.trotter import solve_trotter
 import sys
 
 
 def evolve(ini_vec, pobj, hobj, solver='ode', nstep=2000):
     import scipy.integrate
+    from ctrlq.lib.solve import solve_func
+    from ctrlq.lib.trotter import solve_trotter
 
     dsham = numpy.diagonal(-1j * hobj.dsham.toarray())
 

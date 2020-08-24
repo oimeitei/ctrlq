@@ -15,7 +15,6 @@
 import numpy, functools, scipy
 from scipy.optimize import approx_fprime
 import sys
-from ctrlq.lib.solve import pulsec
 from ctrlq.cvqe.pulse import pulse
 from ctrlq.cvqe.evolve import evolve
 
@@ -74,6 +73,8 @@ class control:
         print(flush=True)
 
     def efunc(self, ini_state, pobj, hobj, solver, nstep, normalize, supdate=False):
+        from ctrlq.lib.solve import pulsec
+        
         stseq = numpy.array(pobj.tseq) / pobj.tscale
         sfreq = numpy.array(pobj.freq) / pobj.fscale
 
