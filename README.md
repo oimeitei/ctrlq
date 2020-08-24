@@ -27,7 +27,11 @@ Detailed information for installation is provided in the documentation and consi
        python -m unittest discover
 
 
-
+## Documentation
+Documentation is available online in html format [here](ctrlq.readthedocs.io)
+and also can be found in the ``/ctrlq/doc`` directory. The documentation
+contains detailed installation instruction including linking to optimized MKL
+libraries and tutorials to run CtrlQ.
 
 
 
