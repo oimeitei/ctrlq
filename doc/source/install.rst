@@ -3,7 +3,10 @@ Installation
 
 Obtaining the Source Code
 -------------------------
-Get the source code form github.
+Get the source code form github::
+
+  git clone https://github.com/oimeitei/ctrlq.git
+
 
 Requirements
 ------------
@@ -36,6 +39,7 @@ simple steps::
 
   cd {top-level-dir}
   mkdir build
+  cd build
   cmake [options] ..
   make
 
