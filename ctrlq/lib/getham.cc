@@ -57,16 +57,16 @@ std::complex<double> pcoef(double &t, std::vector< double > &amp,
 }
 
 
-Eigen::SparseMatrix<std::complex<double>>
+Eigen::SparseMatrix<std::complex<double> >
 getham(double &t, pulsec &pobj,
-       std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t>>> &hdrive,
+       std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t> > > &hdrive,
        std::vector< std::complex<double> > &dsham, int &dsham_len,
-       Eigen::SparseMatrix<std::complex<double>> &matexp_){
+       Eigen::SparseMatrix<std::complex<double> > &matexp_){
 
   // dsham is different from python version, here it's the diagonal of
   // -1j*hobj.dsham in the python version.
  
-  Eigen::SparseMatrix<std::complex<double>> hamdr;
+  Eigen::SparseMatrix<std::complex<double> > hamdr;
   std::complex<double> hcoef, hcoefc;
  
   int i;
@@ -89,7 +89,7 @@ getham(double &t, pulsec &pobj,
     matexp_.coeffRef(i,i) = std::exp(dsham[i] * t);
   }
 
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
   hamr_ = (matexp_.conjugate().transpose() * hamdr);
   hamr_ = (hamr_ * matexp_).pruned();
   

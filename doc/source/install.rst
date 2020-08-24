@@ -14,7 +14,7 @@ Requirements
 To build CtrlQ from source the following dependencies are required.
 
    - CMake 4.0 or higher
-   - GCC 4.8 or newer (Intel C++ 16.0 or newer)
+   - GCC 5.2 or newer (Intel C++ 17.0 or newer)
    - Python 3.5 or higher
    - Numpy 1.8 or newer
    - Scipy 1.4 or newer
