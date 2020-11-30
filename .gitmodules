@@ -4,3 +4,6 @@
 [submodule "external/fmath"]
 	path = external/fmath
 	url = https://github.com/herumi/fmath
+[submodule "external/--force"]
+	path = external/--force
+	url = https://github.com/pybind/pybind11
