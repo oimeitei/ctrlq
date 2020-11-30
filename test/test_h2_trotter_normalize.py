@@ -22,9 +22,9 @@ class expecth2(unittest.TestCase):
         myham = cvqe.transmon(mham = cHam)
 
         ctrl = cvqe.control( mypulse, myham, nstep=5000,
-                             solver='trotter')
+                             solver='trotter', iprint=0)
 
-        e1, l1 = ctrl.energy(normalize = True, iprint=False)
+        e1, l1 = ctrl.energy(normalize = True)
 
         self.assertAlmostEqual(e1, -1.121832748743835, 8)
         self.assertAlmostEqual(l1*100.,  0.638738650065718, 8)
@@ -47,9 +47,9 @@ class expecth2(unittest.TestCase):
         myham = cvqe.transmon(mham = cHam)
 
         ctrl = cvqe.control( mypulse, myham, nstep=5000,
-                             solver='trotter')
+                             solver='trotter', iprint=0)
 
-        e1, l1 = ctrl.energy(normalize = True, iprint=False)
+        e1, l1 = ctrl.energy(normalize = True)
 
         self.assertAlmostEqual(e1, -1.041003304941890, 8)
         self.assertAlmostEqual(l1*100., 0.067308598896398, 8)
@@ -73,9 +73,9 @@ class expecth2(unittest.TestCase):
         myham = cvqe.transmon(mham = cHam)
 
         ctrl = cvqe.control( mypulse, myham, nstep=5000,
-                             solver='trotter')
+                             solver='trotter', iprint=0)
 
-        e1, l1 = ctrl.energy(normalize = True, iprint=False)
+        e1, l1 = ctrl.energy(normalize = True)
 
         self.assertAlmostEqual(e1, -1.100170840004205, 8)
         self.assertAlmostEqual(l1*100., 0.232940585238139, 8)    

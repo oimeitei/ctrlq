@@ -19,12 +19,12 @@ def numgradfreq_2_(self,idx,f1, ini_state, pobj, hobj, nstep,
     # 2-point stencil numerical gradient for the freq[idx]
     # in pobj
 
-    pobj.freq[idx] += delx * pobj.fscale
+    pobj.freq[idx] += delx 
     f2 = self.efunc(ini_state, pobj, hobj, 'trotter', nstep,
                     normalize, twindow=twindow, cobj=cobj,tmp=idx)
-    pobj.freq[idx] -= delx * pobj.fscale
+    pobj.freq[idx] -= delx 
     
-    g_ = (f2-f1)/(delx/pobj.fscale)
+    g_ = (f2-f1)/(delx)
 
     return g_
 

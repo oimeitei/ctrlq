@@ -262,9 +262,9 @@ class control:
            else:
                if shape=='square':
                    self.anatwin(ilist,self.pulse, self.ham, self.nstep,normalize)
-               else:
-                   E_ = self.efunc(self.ham.initial_state, self.pulse, self.ham, self.solver,
-                               self.nstep, normalize, supdate=True, twindow=True)
+               elif shape =='flattop':
+                   E_ = self.gaussquare_obj(ilist, self.pulse, self.ham, self.solver,
+                                   self.nstep, normalize, grad=False)
           
            if shape=='gaussian':
                
@@ -338,7 +338,7 @@ class control:
 
            else:
                sys.exit('Gradient method not implemented. Supports \'numerical\' and \'analytical\' only.')
-               
+
            if self.iprint > 0:
                print(flush=True)
                print('  Pulse optimization ends',flush=True)
@@ -370,23 +370,24 @@ class control:
                    cout = 0
                    print(flush=True)
                    print('  -----* Optimal pulse parameters *-----',flush=True)
-                   print('  | Amplitudes',flush=True)
-                   for i in range(self.pulse.nqubit):
-                       print('  Qubit ',i+1,' : ',end='',flush=True)
-                       
-                       cout_ = 0
-                       for j in range(self.pulse.nwindow):
-                           if cout_ == 4:
-                               print(flush=True)
-                               print('              ',end='',flush=True)
-                               cout_ = 0
-                           print(' {:>20.16f}  '.format(res1.x[cout]),end='',flush=True)
-                           cout_ += 1
-                           cout += 1
-                       print(flush=True)
-                   print(flush=True)
-                   
+                                      
                    if shape=='square':
+                       print('  | Amplitudes',flush=True)
+                       for i in range(self.pulse.nqubit):
+                           print('  Qubit ',i+1,' : ',end='',flush=True)
+                           
+                           cout_ = 0
+                           for j in range(self.pulse.nwindow):
+                               if cout_ == 4:
+                                   print(flush=True)
+                                   print('              ',end='',flush=True)
+                                   cout_ = 0
+                               print(' {:>20.16f}  '.format(res1.x[cout]),end='',flush=True)
+                               cout_ += 1
+                               cout += 1
+                           print(flush=True)
+                       print(flush=True)
+                   
                        qu = 1
                        print('  | Time Windows',flush=True)
                        for i in self.pulse.tseq:
@@ -403,7 +404,67 @@ class control:
                                cout_ += 1
                            print(flush=True)
                        print(flush=True)
-                   
+                       
+                   elif shape == 'gaussian':
+
+                       amp__ = [[] for i in range(self.pulse.nqubit)]
+                       mean__ = [[] for i in range(self.pulse.nqubit)]
+                       sigma__ = [[] for i in range(self.pulse.nqubit)]
+                       
+                       for i in range(self.pulse.nqubit):
+                           for j in range(self.pulse.ngaus):
+                               amp__[i].append(res1.x[cout])
+                               cout += 1
+                               mean__[i].append(res1.x[cout])
+                               cout += 1
+                               sigma__[i].append(res1.x[cout])
+                               cout += 1
+                               
+                       print('  | Amplitudes',flush=True)
+                       for i in range(self.pulse.nqubit):
+                           print('  Qubit ',i+1,' : ',end='',flush=True)
+                           
+                           cout_=0
+                           for j in range(self.pulse.ngaus):
+                               if cout_ ==4:
+                                   print(flush=True)
+                                   print('              ',end='',flush=True)
+                                   cout_ = 0
+                               print(' {:>20.16f}  '.format(amp__[i][j]),end='',flush=True)
+                               cout_ += 1
+                           print(flush=True)
+                       print(flush=True)
+                               
+                       print('  | Mean',flush=True)
+                       for i in range(self.pulse.nqubit):
+                           print('  Qubit ',i+1,' : ',end='',flush=True)
+                           
+                           cout_=0
+                           for j in range(self.pulse.ngaus):
+                               if cout_ ==4:
+                                   print(flush=True)
+                                   print('              ',end='',flush=True)
+                                   cout_ = 0
+                               print(' {:>20.16f}  '.format(mean__[i][j]),end='',flush=True)
+                               cout_ += 1
+                           print(flush=True)
+                       print(flush=True)
+                               
+                       print('  | Variance',flush=True)
+                       for i in range(self.pulse.nqubit):
+                           print('  Qubit ',i+1,' : ',end='',flush=True)
+                           
+                           cout_=0
+                           for j in range(self.pulse.ngaus):
+                               if cout_ ==4:
+                                   print(flush=True)
+                                   print('              ',end='',flush=True)
+                                   cout_ = 0
+                               print(' {:>20.16f}  '.format(sigma__[i][j]),end='',flush=True)
+                               cout_ += 1
+                           print(flush=True)
+                       print(flush=True)
+                       
                    qu = 1
                    print('  | Frequencies',flush=True)
                    for i in self.pulse.freq:
@@ -411,6 +472,7 @@ class control:
                        qu += 1               
                        print(' {:>20.16f}  '.format(res1.x[cout]),flush=True)
                        cout += 1 
+                   print(flush=True)
                    print('  Printing ends ',flush=True)
                    print('  --------------------------------------',flush=True)
                    print(flush=True)

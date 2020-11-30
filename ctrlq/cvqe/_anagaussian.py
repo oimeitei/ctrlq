@@ -55,6 +55,7 @@ def anagaus(self, list1, pobj, hobj, nstep,normalize):
 
     self.energy_ = ggrad.energy
     self.leak = 1.0 - ggrad.norm
+    self.gradient_ = gradient
 
     return(ggrad.energy, gradient)
 

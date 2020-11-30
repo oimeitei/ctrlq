@@ -36,7 +36,8 @@ class transmon:
 
     def __init__(self, nqubit=2, nstate=3, mham=[], istate=[]):
 
-        if not mham:
+        mham = numpy.array(mham)
+        if mham.size == 0:
             sys.exit(' Provide molecular Hamiltonian')
         # static                
         Hstatic = static_ham(nstate, nqubit=nqubit)
