@@ -23,6 +23,24 @@ getham(double &t, pulsec &pobj,
        std::vector< std::complex<double> > &dsham, int &dsham_len,
        Eigen::SparseMatrix<std::complex<double>> &matexp_);
 
+Eigen::SparseMatrix<std::complex<double> >
+getham2(double &t, int itx, pulsec &pobj,
+	std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t> > > &hdrive,
+	std::vector< std::complex<double> > &dsham, int &dsham_len,
+	Eigen::SparseMatrix<std::complex<double> > &matexp_,
+	std::vector< Eigen::SparseMatrix<std::complex<double> > > &ihamdr, 
+	Eigen::SparseMatrix<std::complex<double> > &hamdr,
+	Eigen::SparseMatrix<std::complex<double> > &hamdR,
+	std::complex<double> &hcoef); //, hcoefc;
 
+
+Eigen::SparseMatrix<std::complex<double> >
+getham3(double &t, int &itx,pulsec &pobj,
+	std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t> > > &hdrive,
+	std::vector< std::complex<double> > &dsham, int &dsham_len,
+	Eigen::SparseMatrix<std::complex<double> > &matexp_, 
+	Eigen::SparseMatrix<std::complex<double> > &hamdr,
+	Eigen::SparseMatrix<std::complex<double> > &hamdR,
+	std::complex<double> &hcoef); //, hcoefc;
 
 #endif

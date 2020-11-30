@@ -14,7 +14,6 @@
 
 import numpy
 from .device import device
-#todo add gaussian pulse
 from math import *
 
 def pcoef(t, amp=None, tseq=None, freq=None, tfinal = 0.0,
@@ -55,26 +54,109 @@ class pulse:
         Scale the frequency of the pulse. Defaults to 1.0.
     tscale : float 
         Scale the time windows and the total time duration of the pulse. Defaults to 1.0.
+    amp_bound : float
+        Constrain for amplitude in 2pi GHz. Defaults to 0.02.
+    freq_bound : float
+        Constrain for drive frequency in 2pi GHz. Defaults to 1.00
     """    
-
+    
     def __init__(self, shape='square', nqubit=2, nwindow=2,
+                 ngaus=2, mean_constraint = None, sigma_constraint=None,
                  amp_constraint = None, tseq_constraint = None,
-                 freq_constraint = None, fscale=1.0, tscale = 1.0, duration = 10.0):
-        if shape == 'square':
+                 freq_constraint = None, fscale=1.0, tscale = 1.0,
+                 duration = 10.0, constrain0=True,
+                 freq_ini_restrict=False, freq_off = 0.6,
+                 amp_bound = 0.02, freq_bound = 1.0):
+        import random
+
+        self.amp_bound = amp_bound
+        self.freq_bound = freq_bound
+        
+        constraint = []
+        freq = []
             
-            constraint = []
+        if shape=='gaussian':
+            amp = []
+            mean = []
+            sigma = []
+            gausamp_ = []
+
+            if not amp_constraint:
+                amp_constraint = []
+                for i in range(nqubit):
+                    amp_ = []
+                    for j in range(ngaus):
+                        amp_.append(numpy.random.uniform(-numpy.pi*2*amp_bound,
+                                                         numpy.pi*2*amp_bound))
+                        amp_constraint.append((-numpy.pi*2*amp_bound,
+                                               numpy.pi*2*amp_bound))
+                    amp.append(amp_)
+                constraint.extend(amp_constraint)
+            elif isintance(amp_contraint, float):
+                tmp_ = []
+                amp_ = []
+                for i in range(nqubit):
+                    amp_ = []
+                    for j in range(ngaus):
+                        tmp_.append((-amp_constraint, amp_constraint))
+                        amp_.append(numpy.random.uniform(-amp_constraint,
+                                                         amp_constraint))
+                    amp.append(amp_)
+                constraint.extend(tmp_)
+            else:
+                constraint.extend(amp_constraint)
+
+            if not sigma_constraint:
+                sigma_constraint = []
+                for i in range(nqubit):
+                    sigma_ = []
+                    for j in range(ngaus):
+                        sigma_.append(numpy.random.uniform(0.025, 5.0))  
+                        sigma_constraint.append(( 0.025, 5.0)) 
+                    sigma.append(sigma_)
+                constraint.extend(sigma_constraint)
+            elif isintance(sigma_contraint, float):
+                tmp_ = []
+                sigma_ = []
+                for i in range(nqubit):
+                    sigma_ = []
+                    for j in range(ngaus):
+                        tmp_.append((0.1, sigma_constraint))
+                        sigma_.append(numpy.random.uniform(0.1, sigma_constraint))
+                    sigma.append(sigma_)
+                constraint.extend(tmp_)
+            else:
+                constraint.extend(sigma_constraint)
+
+            if not mean_constraint:
+                mean_constraint = []
+                for i in range(nqubit):
+                    mean_ = []
+                    for j in range(ngaus):
+                        mean_constraint.append((0.0,duration*tscale))
+                        mean_.append(numpy.random.uniform(0.0, duration*tscale))
+                    mean.append(sorted(mean_))
+            constraint.extend(mean_constraint)
+            self.amp = amp
+            self.mean = mean
+            self.sigma = sigma
+            self.ngaus = ngaus
+            self.gausamp_ = gausamp_
+            
+        elif shape == 'square':
             amp= []
             tseq = []
-            freq = []
             if not amp_constraint:
                 amp_constraint = []
                 for i in range(nqubit):
                     amp_ = []
                     for j in range(nwindow):
-                        amp_constraint.append((-numpy.pi*2*0.02,
-                                               numpy.pi*2*0.02))
-                        amp_.append(numpy.random.uniform(-numpy.pi*2*0.02,
-                                                         numpy.pi*2*0.02))
+                        amp_.append(numpy.random.uniform(-numpy.pi*2*amp_bound,
+                                                         numpy.pi*2*amp_bound))
+                        if (j==0 and not constrain0):
+                            continue
+                        amp_constraint.append((-numpy.pi*2*amp_bound,
+                                               numpy.pi*2*amp_bound))
                     amp.append(amp_)
                     
                 constraint.extend(amp_constraint)
@@ -93,8 +175,7 @@ class pulse:
                 constraint.extend(tmp_)
 
             else:
-                constraint.extend(amp_constraint)
-                
+                constraint.extend(amp_constraint)                
             
             if not tseq_constraint:
                 tseq_constraint = []
@@ -105,31 +186,34 @@ class pulse:
                         tseq_.append(numpy.random.uniform(0.0, duration*tscale))
 
                     tseq.append(sorted(tseq_))
-            #constraint.extend(tseq_constraint)
             
-            if not freq_constraint:
-                dp = device()
-                freq_constraint = []
-                for i in range(nqubit):
-                    freq_constraint.append(((dp.w[i]-1.)*fscale,
-                                            (dp.w[i]+1.)*fscale))
-
-                    #tmp__ = numpy.random.uniform((dp.w[i]-1.)*0.01,
-                    #                             (dp.w[i]+1.)*0.01)
-                    #freq.append(tmp__*100.0)
-                    freq.append(numpy.random.uniform((dp.w[i]-1.)*fscale,
-                                                     (dp.w[i]+1.)*fscale))
-                                
-            constraint.extend(freq_constraint)
-            self.constraint = constraint
             self.amp = amp
             self.tseq = tseq
-            self.freq = freq
-            self.duration = duration
-            self.nqubit = nqubit
             self.nwindow = nwindow
-            self.fscale = fscale
-            self.tscale = tscale
         else:
             sys.exit('Pulse shape not yet implemented')
+
+        if not freq_constraint:
+            dp = device()
+            freq_constraint = []
+            for i in range(nqubit):
+                freq_constraint.append(((dp.w[i]-freq_bound)*fscale,
+                                        (dp.w[i]+freq_bound)*fscale))
+                if not freq_ini_restrict:
+                    freq.append(numpy.random.uniform((dp.w[i]-freq_bound)*fscale,
+                                                     (dp.w[i]+freq_bound)*fscale))
+                else:
+                    rand1 = numpy.random.uniform((dp.w[i]-freq_bound)*fscale,
+                                                 (dp.w[i]-freq_off)*fscale)
+                    rand2 = numpy.random.uniform((dp.w[i]+freq_off)*fscale,
+                                                 (dp.w[i]+freq_bound)*fscale)
+                    freq.append(random.choice([rand1,rand2]))
+                                
+        constraint.extend(freq_constraint)
+        self.constraint = constraint
+        self.freq = freq
+        self.duration = duration
+        self.nqubit = nqubit
+        self.fscale = fscale
+        self.tscale = tscale
             

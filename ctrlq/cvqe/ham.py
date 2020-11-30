@@ -16,7 +16,7 @@ import scipy, numpy, itertools
 import scipy.linalg
 from .device import *
 from .omisc import *
-import sys
+import sys,numpy
 
 class transmon:
     """Transmon Hamiltonian class.
@@ -30,10 +30,14 @@ class transmon:
          Number of states. Defaults to 3.
     mham : numpy.ndarray
          Molecular Hamiltonian in the qubit representation.
+    istate : list
+         Initial state. Defaults to |01> and |0011> for 2 and 4 qubits resp.
     """   
 
-    def __init__(self, nqubit=2, nstate=3, mham=None):
+    def __init__(self, nqubit=2, nstate=3, mham=[], istate=[]):
 
+        if not mham:
+            sys.exit(' Provide molecular Hamiltonian')
         # static                
         Hstatic = static_ham(nstate, nqubit=nqubit)
         basis_ = cbas_(nstate, nq = nqubit)
@@ -56,14 +60,23 @@ class transmon:
                 cout_ += 1
             states.append(sum_)
         self.states = states
-        if nqubit == 2:
-            istate = [0,1]
-        elif nqubit == 4:
-            istate = [0,0,1,1]
+        if not istate:
+            if nqubit == 2:
+                istate = [0,1]
+            elif nqubit == 4:
+                istate = [0,0,1,1]
+            elif nqubit == 6:
+                istate = [0,0,1,0,0,1]
+            else:
+                sys.exit("Provide initial state using self.initialize_psi()")
+            
+            istate_ = initial_state(istate, nstate)
+            self.initial_state = istate_
         else:
-            sys.exit("Provide initial state using self.initialize_psi()")
-        istate = initial_state(istate, nstate)
-        self.initial_state = istate
+            istate_ = initial_state(istate, nstate)
+            self.initial_state = istate_
+        self.istate = istate
+
 
     def initialize_psi (self, ket):
         """Initial state vector
@@ -195,7 +208,7 @@ def t_ham(nstate, nqubit = 2):
              
 
 def dresser(H_, basis_):
-
+    
     evals, evecs = scipy.linalg.eigh(H_)
 
     evecs = evecs.T

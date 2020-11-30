@@ -5,6 +5,7 @@ project (lib)
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 
 # Set eigen library here
 if (DEFINED ENV{EIGEN_INCLUDE})
@@ -57,7 +58,7 @@ endif()
 add_subdirectory(external)
 add_subdirectory(ctrlq)
 
-set_target_properties(solve trotter
+set_target_properties(solve trotter agradc pulse_helper
      PROPERTIES
      SUFFIX ".so"
      LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/ctrlq/lib)

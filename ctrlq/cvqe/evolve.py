@@ -12,20 +12,15 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-import numpy, scipy
-import sys
-
-
-def evolve(ini_vec, pobj, hobj, solver='ode', nstep=2000):
+def evolve(ini_vec, pobj, hobj, solver='ode', nstep=2000, twindow=True):
     import scipy.integrate
+    import numpy, scipy, sys
     from ctrlq.lib.solve import solve_func
-    from ctrlq.lib.trotter import solve_trotter
+    from ctrlq.lib.trotter import solve_trotter, solve_trotter2
+    from ctrlq.lib.agradc import grad_trotter
 
-    dsham = numpy.diagonal(-1j * hobj.dsham.toarray())
-
-    
+    dsham = numpy.diagonal(-1j * hobj.dsham.toarray())    
     tlist = numpy.linspace(0, pobj.duration, nstep)
-    
     
     if solver == 'ode':
         r = scipy.integrate.ode(solve_func)
@@ -47,8 +42,11 @@ def evolve(ini_vec, pobj, hobj, solver='ode', nstep=2000):
     
     elif solver == 'trotter':
         
-        tmp_ = solve_trotter(tlist, ini_vec, pobj, numpy.array(hobj.hdrive), dsham)
-      
+        if not twindow:
+            tmp_ = solve_trotter2(tlist, ini_vec, pobj, numpy.array(hobj.hdrive), dsham)
+        else:        
+            tmp_ = solve_trotter(tlist, ini_vec, pobj, numpy.array(hobj.hdrive), dsham)
+
         return tmp_
 
     else:
