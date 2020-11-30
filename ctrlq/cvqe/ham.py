@@ -16,7 +16,7 @@ import scipy, numpy, itertools
 import scipy.linalg
 from .device import *
 from .omisc import *
-import sys,numpy
+import sys
 
 class transmon:
     """Transmon Hamiltonian class.
