@@ -32,5 +32,4 @@ simulations: ctrl-VQE, `arXiv:2008.04302 <https://arxiv.org/abs/2008.04302>`_
    tutorial
    pulse
    ham
-   kernel	     
-
+   kernel

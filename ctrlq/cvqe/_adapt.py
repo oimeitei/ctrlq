@@ -38,9 +38,7 @@ def objfun(x, x1, x2, g, tlist):
 def adapt(self, gradient='analytical', maxiter=200, shape='square',
           normalize=True, maxls=20, maxwindow=20,
           twindow=False, random=True, exactE = 0, thres=1e-4):
-    from ctrlq import cvqe
-
-    """Adaptive update of pulse parameterization
+    """control class method:
     Perform ctrl-VQE pulse optimization by adaptively increasing the
     number of pulse parameterization one at a time to determine an 
     optimal number for a target accuracy. Only supported for 'square'
@@ -59,8 +57,9 @@ def adapt(self, gradient='analytical', maxiter=200, shape='square',
     random : bool
              Whether to use random slicing of square pulse or use the duration where gradients are maximum on each halves. Defaults to True.
 
-    """
-    
+    """    
+    from ctrlq import cvqe
+
     iter_ = 1
     if self.iprint > 1:
         print(flush=True)

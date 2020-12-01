@@ -18,7 +18,7 @@ mypulse.freq=[29.407306   , 30.992068]
 
 myham = cvqe.transmon(mham = cHam)
 
-ctrl = cvqe.control(mypulse,myham,nstep=500,solver='ode')
+ctrl = cvqe.control(mypulse,myham,nstep=500,solver='trotter')
 energy, leak = ctrl.optimize(normalize=True)
 
 print('Error in ctrl-VQE energy : {:>.4e}'.format(energy-eval1[0]))
