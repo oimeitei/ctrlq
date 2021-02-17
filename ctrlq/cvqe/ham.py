@@ -34,13 +34,15 @@ class transmon:
          Initial state. Defaults to |01> and |0011> for 2 and 4 qubits resp.
     """   
 
-    def __init__(self, nqubit=2, nstate=3, mham=[], istate=[]):
-
-        mham = numpy.array(mham)
+    def __init__(self, nqubit=2, nstate=3, mham=numpy.array([]), istate=[],
+                 Hstatic=numpy.array([])):
+        
         if mham.size == 0:
             sys.exit(' Provide molecular Hamiltonian')
-        # static                
-        Hstatic = static_ham(nstate, nqubit=nqubit)
+        # static
+        if Hstatic.size == 0:
+            Hstatic = static_ham(nstate, nqubit=nqubit)
+        
         basis_ = cbas_(nstate, nq = nqubit)
         Hamdbas = dresser(Hstatic, basis_)
         self.dsham = msdressed(Hamdbas, Hstatic)
@@ -119,10 +121,9 @@ def getham(t, pobj, hobj):
     matexp_ = numpy.diag(matexp_)
 
     hamr_ = functools.reduce(numpy.dot, (matexp_.conj().T, hamdr, matexp_))
-    #print(type(hamr_))
+    
     return hamr_
         
-
 def static_ham(nstate, nqubit = 2):
 
     diag_n = numpy.arange(nstate)
@@ -133,7 +134,7 @@ def static_ham(nstate, nqubit = 2):
     cstate = create(nstate)
 
     dp = device()
-
+    
     ham_ = 0.0
     iwork = True
     for i in range(nqubit):
@@ -164,7 +165,7 @@ def static_ham(nstate, nqubit = 2):
             tmp_ = numpy.kron(tmp_,wrk)
             if iwork:
                 tmp_i = numpy.kron(tmp_i,wrk_i)
-                            
+
         ham_ += tmp_
         if iwork:
             tmp_i += tmp_i.conj().T

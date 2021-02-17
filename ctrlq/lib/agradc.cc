@@ -38,10 +38,10 @@ namespace py = pybind11;
 
 gradc grad_trotter(
                                std::vector<double> &tlist,
-                               std::vector<std::complex<double>> &ini_vec,
+                               std::vector<std::complex<double> > &ini_vec,
                                pulsec pobj,
                                std::vector< std::vector< Eigen::SparseMatrix
-			       <double,0,ptrdiff_t>>> hdrive,
+			       <double,0,ptrdiff_t> > > hdrive,
                                std::vector< std::complex<double> > dsham,
 			       std::vector< int> &states,
 			       Eigen::MatrixXcd &cHam){
@@ -53,10 +53,10 @@ gradc grad_trotter(
 
 gradc grad_trotter_normalized(
                                std::vector<double> &tlist,
-                               std::vector<std::complex<double>> &ini_vec,
+                               std::vector<std::complex<double> > &ini_vec,
                                pulsec pobj,
                                std::vector< std::vector< Eigen::SparseMatrix
-			       <double,0,ptrdiff_t>>> hdrive,
+			       <double,0,ptrdiff_t> > > hdrive,
                                std::vector< std::complex<double> > dsham,
 			       std::vector< int> &states,
 			       Eigen::MatrixXcd &cHam){

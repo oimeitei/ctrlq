@@ -14,6 +14,29 @@
 
 import numpy
 
+def numgradw_2_(self,idx,f1, ini_state, pobj, hobj, nstep, device_,interact,
+                delx=0.00005, twindow = False, cobj=False, normalize=False):
+
+    from .drift import transmon4_static
+    from .ham import transmon
+
+    # 2-point stencil numerical gradient for the device_.w[idx]
+
+    pi2 = 2 * numpy.pi
+    device_.w[idx] += delx * pi2
+
+    hstatic_ = transmon4_static(param=device_, interact=interact)
+    hobj_ = transmon(mham= hobj.mham, nqubit=hobj.nqubit, Hstatic=hstatic_)
+
+    f2 = self.efunc(ini_state, pobj, hobj_, 'trotter', nstep,
+                    normalize, twindow=twindow, cobj=cobj) #,tmp=idx) ###
+
+    g_ = (f2-f1)/(delx * pi2)
+
+    device_.w[idx] -= delx * pi2
+
+    return g_
+
 def numgradfreq_2_(self,idx,f1, ini_state, pobj, hobj, nstep,
                    delx=0.00005, twindow = False, cobj=False, normalize=False):
     # 2-point stencil numerical gradient for the freq[idx]

@@ -34,15 +34,15 @@ namespace py = pybind11;
 
 Eigen::MatrixXcd solve_trotter(		       
 			       std::vector<double> &tlist,
-			       std::vector<std::complex<double>> &ini_vec,
+			       std::vector<std::complex<double> > &ini_vec,
 			       pulsec pobj,
-			       std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t>>> hdrive,
+			       std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t> > > hdrive,
 			       std::vector< std::complex<double> > dsham){
 
-  Eigen::SparseMatrix<std::complex<double>> H_ ;
+  Eigen::SparseMatrix<std::complex<double> > H_ ;
   Eigen::MatrixXcd H1_;
   int dsham_len = dsham.size();
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
     matexp_(dsham_len, dsham_len);
   
   Eigen::Map<Eigen::VectorXcd> trot_(ini_vec.data(), ini_vec.size());
@@ -62,13 +62,13 @@ Eigen::MatrixXcd solve_trotter(
 
 Eigen::MatrixXcd solve_trotter2(
 			std::vector<double> &tlist,
-			std::vector<std::complex<double>> &ini_vec,
+			std::vector<std::complex<double> > &ini_vec,
 			pulsec pobj,
 			std::vector< std::vector< Eigen::SparseMatrix
-			<double,0,ptrdiff_t>>> hdrive,
+			<double,0,ptrdiff_t> > > hdrive,
 			std::vector< std::complex<double> > dsham){
   
-  Eigen::SparseMatrix<std::complex<double>> H_ ;
+  Eigen::SparseMatrix<std::complex<double> > H_ ;
   Eigen::MatrixXcd H1_;
   
   int dsham_len = dsham.size();
@@ -78,7 +78,7 @@ Eigen::MatrixXcd solve_trotter2(
   Eigen::SparseMatrix<std::complex<double> > hamdR;
   std::complex<double> hcoef;
 
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
     matexp_(dsham_len, dsham_len);
   
   Eigen::Map<Eigen::VectorXcd> trot_(ini_vec.data(), ini_vec.size());

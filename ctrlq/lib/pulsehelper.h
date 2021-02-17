@@ -18,7 +18,7 @@ struct gausgrad{
   double energy;
   double norm;
   std::vector<double> gradient;
-  std::vector<std::vector<double >> amp;
+  std::vector<std::vector<double > > amp;
 
   gausgrad(double &energy_,double &norm_,
 	std::vector<double> &gradient_,

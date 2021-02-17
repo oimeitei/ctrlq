@@ -34,14 +34,14 @@
 namespace py = pybind11;
 
 gausgrad gaus_getnamp(int nqubit, int &ngaus, double duration,					     
-						 std::vector< std::vector<double >> &amp,
-						 std::vector< std::vector<double >> &sigma,
-						 std::vector< std::vector<double >> &mean,
+						 std::vector< std::vector<double > > &amp,
+						 std::vector< std::vector<double > > &sigma,
+						 std::vector< std::vector<double > > &mean,
 						 std::vector<double > freq,
 						 std::vector<double> &tlist,
-						 std::vector<std::complex<double>> &ini_vec,
+						 std::vector<std::complex<double> > &ini_vec,
 						 std::vector< std::vector< Eigen::SparseMatrix
-									   <double,0,ptrdiff_t>>> hdrive,
+									   <double,0,ptrdiff_t> > > hdrive,
 						 std::vector< std::complex<double> > dsham,
 						 std::vector< int> &states,
 						 Eigen::MatrixXcd &cham){
@@ -51,14 +51,14 @@ gausgrad gaus_getnamp(int nqubit, int &ngaus, double duration,
   int tlen = tlist.size();
   
   std::vector< std::vector< std::vector<double > > >
-    expterm(nqubit, std::vector<std::vector<double>> (ngaus, std::vector< double> (tlen)));
+    expterm(nqubit, std::vector<std::vector<double> > (ngaus, std::vector< double> (tlen)));
   
-  std::vector<std::vector<double >> tseq;
+  std::vector<std::vector<double > > tseq;
   int nwindow = 0;
   double gamp, gsig, gmean, esigmean;
   std::vector<double > agradient;
   
-  std::vector<std::vector<double >> tamp(nqubit, std::vector<double> (tlen));
+  std::vector<std::vector<double > > tamp(nqubit, std::vector<double> (tlen));
   int i,j,k;
   for (i=0; i<nqubit; i++){
     for (j=0;j<ngaus; j++){
@@ -102,10 +102,10 @@ gausgrad gaus_getnamp(int nqubit, int &ngaus, double duration,
 
 std::vector<double> gaus_gettamp(int &nqubit, int &ngaus,
 				std::vector<double> &tlist,
-				std::vector< std::vector<double >> &amp,
-				std::vector< std::vector<double >> &sigma,
-				std::vector< std::vector<double >> &mean,
-				std::vector< std::vector<double >> &gradient_){
+				std::vector< std::vector<double > > &amp,
+				std::vector< std::vector<double > > &sigma,
+				std::vector< std::vector<double > > &mean,
+				std::vector< std::vector<double > > &gradient_){
 
   double gamp, gsig, gmean, esigmean;
   std::vector<double > agradient;

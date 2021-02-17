@@ -30,10 +30,10 @@
 
 gradc grad_ana(
 	       std::vector<double> &tlist,
-	       std::vector<std::complex<double>> &ini_vec,
+	       std::vector<std::complex<double> > &ini_vec,
 	       pulsec pobj,
 	       std::vector< std::vector< Eigen::SparseMatrix
-	       <double,0,ptrdiff_t>>> hdrive,
+	       <double,0,ptrdiff_t> > > hdrive,
 	       std::vector< std::complex<double> > dsham,
 	       std::vector< int> &states,
 	       Eigen::MatrixXcd &cHam){
@@ -51,10 +51,10 @@ gradc grad_ana(
   
   std::complex<double> psit_g;
   
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
     matexp_(dsham_len, dsham_len);
 
-  Eigen::SparseMatrix<std::complex<double>> hD, Hd_;
+  Eigen::SparseMatrix<std::complex<double> > hD, Hd_;
   Eigen::MatrixXcd H1_, P_;
   Eigen::VectorXcd psi_;
   Eigen::VectorXcd states_(nstate);
@@ -149,10 +149,10 @@ gradc grad_ana(
 
 gradc grad_ana_normalized(
                                std::vector<double> &tlist,
-                               std::vector<std::complex<double>> &ini_vec,
+                               std::vector<std::complex<double> > &ini_vec,
                                pulsec pobj,
                                std::vector< std::vector< Eigen::SparseMatrix
-			       <double,0,ptrdiff_t>>> hdrive,
+			       <double,0,ptrdiff_t> > > hdrive,
                                std::vector< std::complex<double> > dsham,
 			       std::vector< int> &states,
 			       Eigen::MatrixXcd &cHam){
@@ -170,10 +170,10 @@ gradc grad_ana_normalized(
   
   std::complex<double> psit_g,psit_gN;
   
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
     matexp_(dsham_len, dsham_len);
 
-  Eigen::SparseMatrix<std::complex<double>> hD, Hd_;
+  Eigen::SparseMatrix<std::complex<double> > hD, Hd_;
   Eigen::MatrixXcd H1_, P_;
   Eigen::VectorXcd psi_,psi_N;
   Eigen::VectorXcd states_(nstate);

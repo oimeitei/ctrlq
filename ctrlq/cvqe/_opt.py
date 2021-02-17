@@ -210,23 +210,23 @@ def optimize(self, method = 'l-bfgs-b', maxiter=100, maxls = 20,
                            cout += 1
                        print(flush=True)
                    print(flush=True)
-               
-                   qu = 1
-                   print('  | Time Windows',flush=True)
-                   for i in self.pulse.tseq:
-                       print('  Qubit ',qu,' : ',end='',flush=True)
-                       qu += 1
-                       cout_ = 0
-                       for j in i:
-                           if cout_ ==4:
-                               print(flush=True)
-                               print('              ',end='',flush=True)
-                               cout_ = 0
-                               
-                           print(' {:>20.16f} '.format(j),end='',flush=True)
-                           cout_ += 1
+                   if not self.nstep == len(self.pulse.tseq[0])+1:
+                       qu = 1
+                       print('  | Time Windows',flush=True)
+                       for i in self.pulse.tseq:
+                           print('  Qubit ',qu,' : ',end='',flush=True)
+                           qu += 1
+                           cout_ = 0
+                           for j in i:
+                               if cout_ ==4:
+                                   print(flush=True)
+                                   print('              ',end='',flush=True)
+                                   cout_ = 0
+                                   
+                               print(' {:>20.16f} '.format(j),end='',flush=True)
+                               cout_ += 1
+                           print(flush=True)
                        print(flush=True)
-                   print(flush=True)
                    
                elif shape == 'gaussian':
 

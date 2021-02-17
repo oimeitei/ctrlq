@@ -27,16 +27,16 @@ namespace py = pybind11;
 
 
 
-Eigen::MatrixXcd solve_func(double &t, std::vector<std::complex<double>> &y,
+Eigen::MatrixXcd solve_func(double &t, std::vector<std::complex<double> > &y,
 			    pulsec &pobj,
-			    std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t>>> &hdrive,
+			    std::vector< std::vector< Eigen::SparseMatrix<double,0,ptrdiff_t> > > &hdrive,
 			    std::vector< std::complex<double> > &dsham){
 
   int dsham_len = dsham.size();
-  Eigen::SparseMatrix<std::complex<double>>
+  Eigen::SparseMatrix<std::complex<double> >
     matexp_(dsham_len, dsham_len);
   
-  Eigen::SparseMatrix<std::complex<double>> H =
+  Eigen::SparseMatrix<std::complex<double> > H =
     getham(t, pobj, hdrive, dsham, dsham_len, matexp_);
   
   Eigen::Map<Eigen::VectorXcd> y_(y.data(), y.size());
